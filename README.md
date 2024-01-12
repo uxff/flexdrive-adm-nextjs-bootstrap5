@@ -1,4 +1,6 @@
-# Bootstrap w/ React
+# Flexdrive Admin by Bootstrap 5 & React
+
+This project is an implementation of admin frontend for Flexdrive(a cloud storage system) by using Next.Js and Bootstrap 5.
 
 Include [Bootstrap](https://getbootstrap.com)'s source Sass with [React](https://react.dev/) and [Next.js](https://nextjs.org/). Also includes [React Bootstrap](https://react-bootstrap.github.io/)
 
