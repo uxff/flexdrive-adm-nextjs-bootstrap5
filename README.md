@@ -11,8 +11,8 @@ Include [Bootstrap](https://getbootstrap.com)'s source Sass with [React](https:/
 ## How to use
 
 ```sh
-git clone https://github.com/twbs/examples.git
-cd examples/react-nextjs/
+git clone https://github.com/uxff/flexdrive-adm-nextjs-bootstrap5.git
+cd flexdrive-adm-nextjs-bootstrap5
 npm install
 npm start
 ```
