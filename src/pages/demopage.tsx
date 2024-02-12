@@ -14,7 +14,7 @@ import Modal from 'react-bootstrap/Modal';
 import { useState } from 'react';
 
 
-export default function Nodelist() {
+export default function Demopage() {
 
   const [showEdit, setShowEdit] = useState(false);
 
