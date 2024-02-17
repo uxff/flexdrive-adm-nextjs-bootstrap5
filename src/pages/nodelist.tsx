@@ -15,7 +15,7 @@ import { useState } from 'react';
 import { useQuery } from 'react-query';
 
 
-export default function Demopage() {
+export default function Nodelist() {
 
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
