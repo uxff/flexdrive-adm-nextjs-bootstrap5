@@ -134,7 +134,8 @@ export default function Nodelist() {
             {data ? data.result.list.map((item) => (
               //查到数据
               <tr>
-                <td>{}</td>
+                <td>{item.Name}</td>
+                <td>{item.Status}</td>
               </tr>
             )):(
               //没有数据
