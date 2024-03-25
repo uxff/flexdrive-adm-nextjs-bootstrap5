@@ -26,11 +26,11 @@ import SimpleHeader from "@/components/SimpleHeader";
 
 // const queryClient = new QueryClient();
 
-export default function Nodelist() {
+export default function LocalFs() {
 
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
-  const perPage = 2;
+  const perPage = 5;
   const pageCount = Math.ceil(total/perPage)?Math.ceil(total/perPage):1;
   const [nodeListData, setNodeListData] = useState(null);
 
@@ -39,8 +39,7 @@ export default function Nodelist() {
   }, []);
 
   const fetchNodeList = async (page: number, perPage: number) => {
-    const url = `http://127.0.0.1:10010/admapi/node/list?page=${page}&pagesize=${perPage}`;
-    // const url = `http://127.0.0.1:10010/admapi/local/.?page=${page}&pagesize=${perPage}`;
+    const url = `http://127.0.0.1:10010/admapi/local/.?page=${page}&pagesize=${perPage}`;
     fetch(url, {
       credentials: 'include',
       mode: 'cors',
@@ -140,29 +139,21 @@ export default function Nodelist() {
         <table className="table table-striped table-bordered table-hover">
           <thead>
             <tr>
-            <th>Node Name</th>
-              <th>Node Addr</th>
-              <th>Cluster</th>
-              <th>Created</th>
-              <th>Reg Time</th>
-              <th>Space</th>
-              <th>Status</th>
-              <th></th>
+              <th>Dir Path</th>
+              <th>File Name</th>
+              <th>Size</th>
+              <th>Operation</th>
             </tr>
           </thead>
           <tbody>
             {nodeListData ? (nodeListData.result ? nodeListData.result.list.map((item) => (
               //查到数据
               <tr>
-                <td>{item.NodeName}</td>
-                <td>{item.NodeAddr}</td>
-                <td>{item.ClusterId}</td>
-                <td>{item.Created}</td>
-                <td>{item.LastRegistered}</td>
-                <td>{item.UsedSpace}/{item.TotalSpace}</td>
-                <td>
-                  {item.Status == 1 ? 'Normal':<span className="warnning">Invalid</span>}
-                </td>
+                <td>{item.is_dir ? <>
+                  <a href="{item.url}">{item.dirpath}/</a>
+                </> :item.name}</td>
+                <td>{item.name}</td>
+                <td>{item.size}</td>
                 <td>
                   <Button variant="info" size="sm" onClick={handleShowEdit}>Edit</Button>{' '}
                   <Button variant="info" size="sm" onClick={handleShowUpdate}>Update</Button>{' '}
@@ -189,23 +180,9 @@ export default function Nodelist() {
             <Col className="d-flex justify-content-end">
               {nodeListData && nodeListData.result && nodeListData.result.list.length > 0 ? 
                 
-              <Pagination >
-                <Pagination.First/>
-                <Pagination.Prev />
-                <Pagination.Item>{1}</Pagination.Item>
-                <Pagination.Ellipsis />
-
-                <Pagination.Item>{10}</Pagination.Item>
-                <Pagination.Item>{11}</Pagination.Item>
-                <Pagination.Item active>{12}</Pagination.Item>
-                <Pagination.Item>{13}</Pagination.Item>
-                <Pagination.Item disabled>{14}</Pagination.Item>
-
-                <Pagination.Ellipsis />
-                <Pagination.Item>{20}</Pagination.Item>
-                <Pagination.Next />
-                <Pagination.Last />
-              </Pagination>
+                <PageHelper allPage={Math.ceil(nodeListData.result.total/nodeListData.result.pagesize)} currentPage={nodeListData.result.page} handleSearch={(page: number)=>{
+                  fetchNodeList(page, perPage);
+                }} loading={false} />
               : <span>
                   No more page.
                 </span>}
@@ -214,25 +191,6 @@ export default function Nodelist() {
           </Row>
         </Container>
 
-        {nodeListData && nodeListData.result && nodeListData.result.list.length > 0 ?
-        <PageHelper allPage={Math.ceil(nodeListData.result.total/nodeListData.result.pagesize)} currentPage={nodeListData.result.page} handleSearch={(page: number)=>{
-          fetchNodeList(page, perPage);
-        }} loading={false} />
-        : <span>No more page for helper. </span>}
-
-        <figure>
-          <blockquote className="blockquote">
-          <p>A well-known quote, contained in a blockquote element.</p>
-          </blockquote>
-          <figcaption className="blockquote-footer">
-          Someone famous in <cite title="Source Title">Source Title</cite>
-          </figcaption>
-        </figure>
-
-        <pre><code>
-          <p>Sample text here...</p>
-          <p>And another line of sample text here...</p>
-        </code></pre>
 
         <Footer />
       </Container>
