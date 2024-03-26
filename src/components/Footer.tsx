@@ -3,7 +3,7 @@ const Footer: React.FC = () => {
     <footer>
       <hr className="mt-5 mb-4" />
       <p className="text-muted">
-        Created and open sourced by the Bootstrap team. Licensed MIT.
+      Copyright <i className="bi bi-c-circle"></i> 2014-2024 All rights reserved. Licensed MIT.
       </p>
     </footer>
   );

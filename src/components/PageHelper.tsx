@@ -125,7 +125,7 @@ const PageHelper: React.FC<PageHelperProps> = ({allPage, currentPage, handleSear
           return <li key={index}
             className={cssName} //{cx('page-change', {choosed: isChoosed, 'page-more': isMore})}
             onClick={() => handleClick(item.toString(), index)}>
-            <a className="page-link" href="#">{item}</a>
+            <a className="page-link">{item}</a>
           </li>;
         })
       }

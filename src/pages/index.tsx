@@ -4,6 +4,12 @@ import AppGuides from "@/components/AppGuides";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ExampleComponents from "@/components/ExampleComponents";
+import AdminNav from "@/components/AdminNav";
+// import Container from "react-bootstrap/Container";
+
+import img1 from '@/images/cloud-storage-01.jpg';
+import img2 from '@/images/cloud-storage-backup-02.jpg';
+import img3 from '@/images/horizontal-scaling-03.jpg';
 
 export default function Home() {
   return (
@@ -14,17 +20,42 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <AdminNav/>
+
       <Container as="main" className="py-4 px-3 mx-auto">
-        <Header />
-
-        <h1>Build Bootstrap with React</h1>
-
-        <ExampleComponents />
-
-        <hr className="col-1 my-5 mx-0" />
-
-        <AppGuides />
-        <Footer />
+        <h2 className="text-center">A Powerful Cloud Storage System</h2>
+        <p className="text-center">Distributed and Based on Golang & gRPC.</p>
+        <hr className="half-rule"/>
+        <div className="row">
+            <div className="col-sm-4">
+                <div className="row">
+                    <img src={img1.src} width={360} height={300}/>
+                </div>
+                <h3 className="text-center"><b>Multiple Terminals</b></h3>
+                <p>Services are provided based on the web and can be adapted to a variety of consumer terminals, including but not limited to Windows, Mac, Android, iPhone, iPad and other platforms.</p>
+            </div>
+            <div className="col-sm-4">
+                <div className="row">
+                    <img src={img2.src} width={360} height={300}/>
+                </div>
+                <h3 className="text-center"><b>Triple Backup</b></h3>
+                <p>Each file will be backed up to at least three storage nodes. If any node in the cluster goes down, the files will not be lost.</p>
+            </div>
+            <div className="col-sm-4">
+                <div className="row ">
+                    {/* <img src={require(`@/images/horizontal-scaling-03.jpg`).default} width={360} height={300}/> */} {/* require().default Not works well */}
+                    <img src="/images/horizontal-scaling-03.jpg" width={360} height={300}/> {/* Must put img under /public/ */}
+                    {/* <img src={img3.src} width={360} height={300}/> */} {/* using img3.src works well */}
+                </div>
+                <h3 className="text-center"><b>Infinitely expandable</b></h3>
+                <p>If there is not enough space, you only need to add cluster nodes horizontally to achieve space expansion. In theory, nodes can be added infinitely to achieve unlimited space.</p>
+            </div>
+        </div>
+        <hr/>
+        <div className="row">
+            <p className="text-center">This project is an open source project, using the MIT protocol. Developers can build their own applications based on this project, or they can contribute their own code to us.<a href="https://github.com/uxff/flexdrive">view source</a></p>
+        </div>
       </Container>
     </>
   );

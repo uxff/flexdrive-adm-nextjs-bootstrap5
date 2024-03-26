@@ -22,24 +22,26 @@ import { useEffect, useState } from 'react';
 import { error } from "console";
 
 import PageHelper from '@/components/PageHelper';
-import SimpleHeader from "@/components/SimpleHeader";
+import AdminNav from "@/components/AdminNav";
 
 // const queryClient = new QueryClient();
 
 export default function LocalFs() {
 
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(1); // for agination
   const [total, setTotal] = useState(0);
   const perPage = 5;
+  const [dirpath, setDirpath] = useState('.');
   const pageCount = Math.ceil(total/perPage)?Math.ceil(total/perPage):1;
-  const [nodeListData, setNodeListData] = useState(null);
+  const [localFsData, setLocalFsData] = useState(null);
 
   useEffect(() => {
-    fetchNodeList(page, perPage);
+    fetchLocalFs(page);
   }, []);
 
-  const fetchNodeList = async (page: number, perPage: number) => {
-    const url = `http://127.0.0.1:10010/admapi/local/.?page=${page}&pagesize=${perPage}`;
+  const fetchLocalFs = (page: number) => {
+    const url = `http://127.0.0.1:10010/admapi/local/${dirpath}?page=${page}&pagesize=${perPage}`;
+    console.log('will fetch: '+url);
     fetch(url, {
       credentials: 'include',
       mode: 'cors',
@@ -47,7 +49,7 @@ export default function LocalFs() {
         'API-Token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJncGEiOiIxLjAuMTcwNDUwMzEwMCJ9.bUXrqlMau9-bWPjYZiiTsBttca8cPWX4seAhC5Ac69A',
       }})
       .then(res => res.json())
-      .then(data => setNodeListData(data))
+      .then(data => setLocalFsData(data))
       .catch(error => console.log(error));
   }
 
@@ -71,18 +73,10 @@ export default function LocalFs() {
         <link rel="icon" href="/favicon.ico" />
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
       </Head>
-      <SimpleHeader />
+      <AdminNav />
       {/* <AdminHeader /> */}
       <Container as="main" className="py-0 px-3 mx-auto">
 
-
-        {/* <Container fluid className="px-0 py-0">
-          <Breadcrumb className=" bg-secondary bg-gradient bg-opacity-10" >
-            <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-            <Breadcrumb.Item href="/nodelist">Node</Breadcrumb.Item>
-            <Breadcrumb.Item active>List</Breadcrumb.Item>
-          </Breadcrumb>
-        </Container> */}
         <Container fluid className="px-0 py-0">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
@@ -93,49 +87,20 @@ export default function LocalFs() {
         </nav>
         </Container>
 
-
-
-        {/* form here         */}
-
-        <Container fluid className="px-4">
-
-          <form>
+        <Container fluid className="px-4 py-3">
             <div className="row">
               <div className="col">
-                <label htmlFor="inputNodeName" className="form-label">Node Name</label>
-                <input type="text" className="form-control" id="inputNodeName" aria-describedby="nodeNameHelp"/>
-                <div id="nodeNameHelp" className="form-text">It should be a hex string with length of 32.</div>
+                <label htmlFor="inputDirPath" className="form-label">Dir Path: </label>
+                <input type="text" className="form-control" id="inputDirPath" aria-describedby="nodeNameHelp" value={dirpath} onChange={(event)=>{setDirpath(event.target.value)}}/>
               </div>
-              <div className="col">
-                <label htmlFor="inputStatus" className="form-label">Status</label>
-                <select className="form-select" id="inputStatus">
-                  <option value="-1" selected>All</option>
-                  <option value="1">Normal</option>
-                  <option value="99">Invalid</option>
-                </select>
-              </div>
-              <div className="col">
-                <label htmlFor="inputLastRegistered" className="form-label">Last Registered</label>
-                <select className="form-select" id="inputLastRegistered">
-                  <option value="-1" selected>All</option>
-                  <option value="1">1 Minute</option>
-                  <option value="5">5 Minutes</option>
-                  <option value="60">1 Hour</option>
-                  <option value="1440">1 Day</option>
-                </select>
-              </div>
-              {/* <div className="col">
-                <input type="checkbox" className="form-check-input" id="exampleCheck1"/>
-                <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
-              </div> */}
               <div className="col align-middle">
                 <label className="form-label">&nbsp;</label><br/>
-                <button type="submit" className="btn btn-primary" id="btnSearch">Search</button>
+                <button type="button" className="btn btn-primary" id="btnSearch" onClick={()=>{fetchLocalFs(1)}}>Search</button>
               </div>
             </div>
-          </form>
         </Container>
 
+        <div className="container-fluid ">
         <table className="table table-striped table-bordered table-hover">
           <thead>
             <tr>
@@ -146,11 +111,13 @@ export default function LocalFs() {
             </tr>
           </thead>
           <tbody>
-            {nodeListData ? (nodeListData.result ? nodeListData.result.list.map((item) => (
+            {localFsData ? (localFsData.result ? localFsData.result.list.map((item) => (
               //查到数据
               <tr>
-                <td>{item.is_dir ? <>
-                  <a href="{item.url}">{item.dirpath}/</a>
+                <td>{item.is_dir ? 
+                <>
+                  {/* <a href={"/localfs?dirpath="+item.dirpath}>{item.dirpath}/</a> */}
+                  <a onClick={()=>{setDirpath(item.dirpath)}}>{item.dirpath}/</a>
                 </> :item.name}</td>
                 <td>{item.name}</td>
                 <td>{item.size}</td>
@@ -167,24 +134,35 @@ export default function LocalFs() {
             )}
           </tbody>
         </table>
+        </div>
 
         {/* <span className="badge text-bg-secondary"></span> */}
         <Container fluid>
           <Row>
             <Col className="d-flex justify-content-start">
-              <Pagination>
+            <ul className="pagination">
+              <li className="page-item disabled">
+                {localFsData && localFsData.result && localFsData.result.list.length > 0 ?
+                  <a className="page-link" tabIndex={-1} aria-disabled="true">Found Results: {localFsData.result.total}</a>
+                  :
+                  <a className="page-link" tabIndex={-1} aria-disabled="true">No results found.</a>
+                }
+              </li>
+              </ul>
+              {/* <Pagination>
                 <Pagination.Item disabled>Found Results: 410</Pagination.Item>
-              </Pagination>
+              </Pagination> */}
             </Col>
 
             <Col className="d-flex justify-content-end">
-              {nodeListData && nodeListData.result && nodeListData.result.list.length > 0 ? 
+              {localFsData && localFsData.result && localFsData.result.list.length > 0 ? 
                 
-                <PageHelper allPage={Math.ceil(nodeListData.result.total/nodeListData.result.pagesize)} currentPage={nodeListData.result.page} handleSearch={(page: number)=>{
-                  fetchNodeList(page, perPage);
+                <PageHelper allPage={Math.ceil(localFsData.result.total/localFsData.result.pagesize)} currentPage={localFsData.result.page} handleSearch={(page: number)=>{
+                  // setPage(page); // will cause infinite loop
+                  fetchLocalFs(page);
                 }} loading={false} />
               : <span>
-                  No more page.
+                  No more pages.
                 </span>}
 
             </Col>

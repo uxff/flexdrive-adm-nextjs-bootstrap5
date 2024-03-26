@@ -19,11 +19,11 @@ const AdminHeader: React.FC = () => {
     <>
       <Navbar expand="lg" className="bg-body-tertiary" bg="dark" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+          <Navbar.Brand href="#home">Flexdrive Admin System</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="#home">Home1</Nav.Link>
+              <Nav.Link href="#home">Home</Nav.Link>
               <Nav.Link href="#link"><i className="bi bi-gear"></i> Link1</Nav.Link>
               <NavDropdown title={mIcon} id="basic-nav-dropdown1">
                 
