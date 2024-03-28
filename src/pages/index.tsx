@@ -7,9 +7,9 @@ import ExampleComponents from "@/components/ExampleComponents";
 import AdminNav from "@/components/AdminNav";
 // import Container from "react-bootstrap/Container";
 
-import img1 from '@/images/cloud-storage-01.jpg';
-import img2 from '@/images/cloud-storage-backup-02.jpg';
-import img3 from '@/images/horizontal-scaling-03.jpg';
+// import img1 from '@/images/cloud-storage-01.jpg'; // cannot find the pictures under /public/
+// import img2 from '@/images/cloud-storage-backup-02.jpg';
+// import img3 from '@/images/horizontal-scaling-03.jpg';
 
 export default function Home() {
   return (
@@ -30,14 +30,14 @@ export default function Home() {
         <div className="row">
             <div className="col-sm-4">
                 <div className="row">
-                    <img src={img1.src} width={360} height={300}/>
+                    <img src="/images/cloud-storage-01.jpg" width={360} height={300}/>
                 </div>
                 <h3 className="text-center"><b>Multiple Terminals</b></h3>
                 <p>Services are provided based on the web and can be adapted to a variety of consumer terminals, including but not limited to Windows, Mac, Android, iPhone, iPad and other platforms.</p>
             </div>
             <div className="col-sm-4">
                 <div className="row">
-                    <img src={img2.src} width={360} height={300}/>
+                    <img src="/images/cloud-storage-backup-02.jpg" width={360} height={300}/>
                 </div>
                 <h3 className="text-center"><b>Triple Backup</b></h3>
                 <p>Each file will be backed up to at least three storage nodes. If any node in the cluster goes down, the files will not be lost.</p>

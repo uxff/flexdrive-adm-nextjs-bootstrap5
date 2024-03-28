@@ -12,11 +12,6 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-// import {
-//   QueryClient,
-//   QueryClientProvider,
-// } from 'react-query';
-// import { useQuery } from 'react-query';
 import { useEffect, useState } from 'react';
 import { error } from "console";
 
@@ -35,6 +30,7 @@ export default function Nodelist() {
   const [nodeName, setNodeName] = useState('');
   const [nodeStatus, setNodeStatus] = useState(-1);
   const [nodeLastRegistered, setNodeLastRegistered] = useState(-1);
+  const [loginInfo, setLoginInfo] = useState(null);
 
   useEffect(() => {
     fetchNodeList(page, perPage);
@@ -60,7 +56,12 @@ export default function Nodelist() {
       body: JSON.stringify(postData),
       })
       .then(res => res.json())
-      .then(data => setNodeListData(data))
+      .then(data => {
+        if (data && data.LoginInfo) {
+          setLoginInfo(data.LoginInfo);
+        }
+        setNodeListData(data);
+      })
       .catch(error => console.log(error));
   }
 
@@ -87,13 +88,11 @@ export default function Nodelist() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      {/* <script src="//cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script> */}
-
-      <AdminNav/>
+      <AdminNav loginInfo={loginInfo}/>
 
       <Container as="main" className="py-0 px-3 mx-auto">
-        <Container fluid className="px-0 py-0">
-          <nav aria-label="breadcrumb">
+        <Container fluid className="px-0 py-3">
+          <nav aria-label="breadcrumb" className="bg-light bg-gradient">
             <ol className="breadcrumb">
               <li className="breadcrumb-item"><a href="/">Home</a></li>
               <li className="breadcrumb-item"><a href="/nodeList">Node</a></li>
@@ -113,7 +112,7 @@ export default function Nodelist() {
             <div className="col">
               <label htmlFor="inputStatus" className="form-label">Status</label>
               <select className="form-select" name="status" id="inputStatus" value={nodeStatus} onChange={(event)=>{setNodeStatus(Number(event.target.value))}}>
-                <option value="-1" selected>All</option>
+                <option value="-1">All</option>
                 <option value="1">Normal</option>
                 <option value="99">Invalid</option>
               </select>
@@ -121,7 +120,7 @@ export default function Nodelist() {
             <div className="col">
               <label htmlFor="inputLastRegistered" className="form-label">Last Registered</label>
               <select className="form-select" name="lastRegistered" id="inputLastRegistered" value={nodeLastRegistered} onChange={(event)=>{setNodeLastRegistered(event.target.value)}}>
-                <option value="-1" selected>All</option>
+                <option value="-1">All</option>
                 <option value="1">1 Minute</option>
                 <option value="5">5 Minutes</option>
                 <option value="60">1 Hour</option>
@@ -141,8 +140,8 @@ export default function Nodelist() {
 
         <table className="table table-striped table-bordered table-hover">
           <thead>
-            <tr>
-            <th>Node Name</th>
+            <tr className="table-primary">
+              <th>Node Name</th>
               <th>Node Addr</th>
               <th>Cluster</th>
               <th>Created</th>
@@ -155,13 +154,13 @@ export default function Nodelist() {
           <tbody>
             {nodeListData ? (nodeListData.result ? nodeListData.result.list.map((item) => (
               //查到数据
-              <tr>
+              <tr key={item.NodeName}>
                 <td>{item.NodeName}</td>
                 <td>{item.NodeAddr}</td>
                 <td>{item.ClusterId}</td>
                 <td>{item.Created}</td>
                 <td>{item.LastRegistered}</td>
-                <td>{item.UsedSpace}/{item.TotalSpace}</td>
+                <td>{item.UsedSpaceDesc}/{item.TotalSpaceDesc}</td>
                 <td>
                   {item.Status == 1 ? <span className="text-success">Normal</span>:<span className="text-warning">Invalid</span>}
                 </td>

@@ -9,7 +9,11 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 // Bootstrap dropdown: https://getbootstrap.com/docs/5.3/components/dropdowns/
 // Bootstrap icons: https://icons.getbootstrap.com/
 
-const AdminNav: React.FC = () => {
+interface AdminNavProps {
+  loginInfo: any;
+}
+
+const AdminNav: React.FC<AdminNavProps> = ({loginInfo}) => {
 
   const mIcon = <>
     <i className="bi bi-gear"></i> Manager
@@ -40,7 +44,7 @@ const AdminNav: React.FC = () => {
               <li className="nav-item dropdown">
                 <a className="nav-link dropdown-toggle" href="#" id="dropdownCustomers" data-bs-toggle="dropdown" aria-expanded="false"><i className="bi bi-people-fill"></i> Customers</a>
                 <ul className="dropdown-menu" aria-labelledby="dropdownCustomers">
-                  <li><a className="dropdown-item" href="/userList">Gustomer List</a></li>
+                  <li><a className="dropdown-item" href="/userList">Customer List</a></li>
                   <li><a className="dropdown-item" href="/userLevelList">Customer Level Management</a></li>
                   <li><a className="dropdown-item" href="/orderList">Order Management</a></li>
                   <li><a className="dropdown-item" href="/shareList">Share Management</a></li>
@@ -55,15 +59,22 @@ const AdminNav: React.FC = () => {
               </li>
             </ul>
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <a className="nav-link" href="/"><i className="bi bi-box-arrow-in-right"></i> Login</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/"> Account</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/"><i className="bi bi-box-arrow-right"></i> Logout</a>
-              </li>
+              {loginInfo && loginInfo.Mid > 0 ?
+              <>
+                <li className="nav-item">
+                  <a className="nav-link"><i className='bi bi-person-circle'></i> {loginInfo.MgrEnt.Email}</a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link"><i className="bi bi-box-arrow-right"></i> Logout</a>
+                </li>
+              </>
+              :
+              <>
+                <li className="nav-item">
+                  <a className="nav-link" href="/"><i className="bi bi-box-arrow-in-right"></i> Login</a>
+                </li>
+              </>
+              }
             </ul>
             {/* <form>
               <input className="form-control" type="text" placeholder="Search" aria-label="Search"></input>
