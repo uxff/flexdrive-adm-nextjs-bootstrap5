@@ -4,9 +4,9 @@ This project is an implementation of admin frontend for Flexdrive(a cloud storag
 
 Include [Bootstrap](https://getbootstrap.com)'s source Sass with [React](https://react.dev/) and [Next.js](https://nextjs.org/). Also includes [React Bootstrap](https://react-bootstrap.github.io/)
 
-## Edit in browser
+## Preview
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/twbs/examples/tree/main/react-nextjs?file=src%2Fpages%2Findex.tsx)
+![Preview the page of File List](public/images/preview-fileList.png)
 
 ## How to use
 
@@ -16,3 +16,4 @@ cd flexdrive-adm-nextjs-bootstrap5
 npm install
 npm start
 ```
+
